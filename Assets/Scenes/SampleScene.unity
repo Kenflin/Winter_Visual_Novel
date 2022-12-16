@@ -891,6 +891,8 @@ MonoBehaviour:
   _textField: {fileID: 1303595048}
   _choiceButtonContainer: {fileID: 888735699}
   _choiceButtonPrefab: {fileID: 2633261222515779900, guid: 163df5ff92e6b144489401fef7f7fbdb, type: 3}
+  _normalTextColor: {r: 0, g: 0, b: 0, a: 1}
+  _thoughtTextColor: {r: 0.08962262, g: 0.090470634, b: 1, a: 1}
 --- !u!4 &1390609856
 Transform:
   m_ObjectHideFlags: 0

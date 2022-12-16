@@ -20,6 +20,12 @@ public class InkManager : MonoBehaviour
     [SerializeField]
     private Button _choiceButtonPrefab;
 
+    [SerializeField]
+    private Color _normalTextColor;
+
+    [SerializeField]
+    private Color _thoughtTextColor;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +36,11 @@ public class InkManager : MonoBehaviour
     void StartStory()
     {
         _story = new Story(_inkJsonAsset.text);
+        _story.BindExternalFunction("ShowCharacter", (string name, string position, string mood)
+            => Debug.Log($"Show character called. {name}, {position}, {mood}"));
+
+        _story.BindExternalFunction("HideCharacter", (string name)
+            => Debug.Log($"Hide character called. {name}"));
         DisplayNextLine();
     }
 
@@ -40,6 +51,8 @@ public class InkManager : MonoBehaviour
             string text = _story.Continue(); // gets next line
 
             text = text?.Trim(); // removes white space from text
+
+            ApplyStyling();
 
             _textField.text = text; // displays new text
         }
@@ -93,6 +106,20 @@ public class InkManager : MonoBehaviour
             {
                 Destroy(button.gameObject);
             }
+        }
+    }
+
+    private void ApplyStyling()
+    {
+        if (_story.currentTags.Contains("thought"))
+        {
+           _textField.color = _thoughtTextColor;
+           _textField.fontStyle = FontStyles.Italic;
+        }
+        else
+        {
+            _textField.color = _normalTextColor;
+            _textField.fontStyle = FontStyles.Normal;
         }
     }
 }
