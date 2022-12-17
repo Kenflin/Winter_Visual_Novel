@@ -4,6 +4,10 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.UI;
+using static CharacterEnums;
+using FontStyles = TMPro.FontStyles;
+using TextAsset = UnityEngine.TextAsset;
+using System;
 
 public class InkManager : MonoBehaviour
 {
@@ -27,20 +31,23 @@ public class InkManager : MonoBehaviour
     private Color _thoughtTextColor;
 
 
-    // Start is called before the first frame update
+    private CharacterManager _characterManager;
+
     void Start()
     {
-        StartStory();      
+        _characterManager = FindObjectOfType<CharacterManager>();
+        StartStory();
     }
 
     void StartStory()
     {
         _story = new Story(_inkJsonAsset.text);
         _story.BindExternalFunction("ShowCharacter", (string name, string position, string mood)
-            => Debug.Log($"Show character called. {name}, {position}, {mood}"));
-
+          => _characterManager.ShowCharacter(name, position, mood));
         _story.BindExternalFunction("HideCharacter", (string name)
-            => Debug.Log($"Hide character called. {name}"));
+          => _characterManager.HideCharacter(name));
+        _story.BindExternalFunction("ChangeMood", (string name, string mood)
+          => _characterManager.ChangeMood(name, mood));
         DisplayNextLine();
     }
 

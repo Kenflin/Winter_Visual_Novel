@@ -4,15 +4,22 @@ VAR mental_health = 50
 
 VAR know_about_food_issue = false
 
+EXTERNAL ShowCharacter(characterName, position, mood)
+
+EXTERNAL HideCharacter(characterName)
+
+EXTERNAL ChangeMood(characterName, mood)
+
+
 -> start
 
 === start ===
 Me: Hey babe?
-Alice: Yeah?
+Alice: Yeah? {ShowCharacter("Alice", "Center", "Fine")}
 Me: Are you feeling okay?
 Alice: Yeah... why?
 Me: Well, that's what I wanted to ask. You know.. after yesterday?
-Alice: Oh... 
+Alice: Oh... {ChangeMood("Alice", "Sad")}
 Alice: Yeah I'm feeling better, I was just stressed and my stomach hurt.
 Me: I needed an angle to approach her. #thought
 *** Is something bothering you?
