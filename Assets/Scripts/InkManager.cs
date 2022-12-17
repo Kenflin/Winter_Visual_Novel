@@ -33,15 +33,61 @@ public class InkManager : MonoBehaviour
 
     private CharacterManager _characterManager;
 
+    private int _relationshipStrength;
+    public int RelationshipStrength
+    {
+        get => _relationshipStrength;
+        private set
+        {
+            Debug.Log($"Updating RelationshipStrength value. Old value: {_relationshipStrength}, new value: {value}");
+            _relationshipStrength = value;
+        }
+    }
+
+    private int _mentalHealth;
+    public int MentalHealth
+    {
+        get => _mentalHealth;
+        private set
+        {
+            Debug.Log($"Updating MentalHealth value. Old value: {_mentalHealth}, new value: {value}");
+            _mentalHealth = value;
+        }
+    }
+
     void Start()
     {
         _characterManager = FindObjectOfType<CharacterManager>();
+
         StartStory();
+
+        InitializeVariables();
+
+        var relationshipStrength = (int)_story.variablesState["relationship_strength"];
+
+        var mentalHealth = (int)_story.variablesState["mental_health"];
+
+        Debug.Log($"Logging ink variables. Relationship strength: {relationshipStrength}, mental health: {mentalHealth}");
+        
+    }
+
+    private static string _loadedState;
+
+    public static void LoadState(string state)
+    {
+        _loadedState = state;
     }
 
     void StartStory()
     {
         _story = new Story(_inkJsonAsset.text);
+
+        if (!string.IsNullOrEmpty(_loadedState))
+        {
+            _story?.state?.LoadJson(_loadedState);
+
+            _loadedState = null;
+        }
         _story.BindExternalFunction("ShowCharacter", (string name, string position, string mood)
           => _characterManager.ShowCharacter(name, position, mood));
         _story.BindExternalFunction("HideCharacter", (string name)
@@ -49,6 +95,23 @@ public class InkManager : MonoBehaviour
         _story.BindExternalFunction("ChangeMood", (string name, string mood)
           => _characterManager.ChangeMood(name, mood));
         DisplayNextLine();
+    }
+
+    private void InitializeVariables()
+    {
+        RelationshipStrength = (int)_story.variablesState["relationship_strength"];
+        MentalHealth = (int)_story.variablesState["mental_health"];
+
+        _story.ObserveVariable("relationship_strength", (arg, value) =>
+        {
+            RelationshipStrength = (int)value;
+        });
+
+        _story.ObserveVariable("mental_health", (arg, value) =>
+        {
+            MentalHealth = (int)value;
+        });
+
     }
 
     public void DisplayNextLine()
@@ -128,5 +191,10 @@ public class InkManager : MonoBehaviour
             _textField.color = _normalTextColor;
             _textField.fontStyle = FontStyles.Normal;
         }
+    }
+
+    public string GetStoryState()
+    {
+        return _story.state.ToJson();
     }
 }
