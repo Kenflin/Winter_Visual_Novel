@@ -42,7 +42,7 @@ public class GameStateManager : MonoBehaviour
         return new SaveData
         {
             InkStoryState = _inkManager.GetStoryState(),
-            //Characters = _characterManager.GetVisibleCharacters()
+            Characters = _characterManager.GetVisibleCharacters()
         };
     }
 
@@ -62,6 +62,7 @@ public class GameStateManager : MonoBehaviour
             file.Close();
 
             InkManager.LoadState(save.InkStoryState);
+            CharacterManager.LoadState(save.Characters);
 
             StartGame();
         }

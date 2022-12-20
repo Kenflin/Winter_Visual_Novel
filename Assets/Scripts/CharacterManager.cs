@@ -21,7 +21,13 @@ public class CharacterManager : MonoBehaviour
     private void Start()
     {
         _characters = new List<Character>();
+
+        if (_loadedCharacters != null)
+        {
+            RestoreState();
+        }
     }
+
 
     public void ShowCharacter(CharacterName name, CharacterPosition position, CharacterMood mood)
     {
@@ -138,5 +144,38 @@ public class CharacterManager : MonoBehaviour
                 Debug.LogError($"Could not find moodset for {name}");
                 return null;
         }
+    }
+
+    public List<CharacterData> GetVisibleCharacters()
+    {
+        var visibleCharacters = _characters.Where(x => x.IsShowing).ToList();
+
+        var characterDataList = new List<CharacterData>();
+
+        foreach (var character in visibleCharacters)
+        {
+            characterDataList.Add(character.GetCharacterData());
+        }
+
+        return characterDataList;
+    }
+
+    private static List<CharacterData> _loadedCharacters;
+
+    public static void LoadState(List<CharacterData> characters)
+    {
+        _loadedCharacters = characters;
+    }
+
+
+
+    private void RestoreState()
+    {
+        foreach (var character in _loadedCharacters)
+        {
+            ShowCharacter(character.Name, character.Position, character.Mood);
+        }
+
+        _loadedCharacters = null;
     }
 }

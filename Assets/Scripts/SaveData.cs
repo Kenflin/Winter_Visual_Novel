@@ -7,5 +7,5 @@ using UnityEngine;
 public class SaveData
 {
     public string InkStoryState;
-    //public List<CharacterData> Characters;
+    public List<CharacterData> Characters;
 }

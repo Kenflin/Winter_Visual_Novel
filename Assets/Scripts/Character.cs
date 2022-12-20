@@ -93,4 +93,14 @@ public class Character : MonoBehaviour
         image.sprite = sprite;
         image.preserveAspect = true;
     }
+
+    public CharacterData GetCharacterData()
+    {
+        return new CharacterData
+        {
+            Name = Name,
+            Position = Position,
+            Mood = Mood
+        };
+    }
 }
