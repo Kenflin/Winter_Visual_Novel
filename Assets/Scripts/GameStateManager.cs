@@ -71,7 +71,10 @@ public class GameStateManager : MonoBehaviour
             Debug.Log("No game saved!");
         }
     }
-
+    public void ExitMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
     public void ExitGame()
     {
         Application.Quit();

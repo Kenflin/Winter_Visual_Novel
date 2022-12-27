@@ -16,6 +16,12 @@ public class Character : MonoBehaviour
 
     private CharacterMoods _moods;
 
+
+    [SerializeField]
+    private Color activeColor;
+    [SerializeField]
+    private Color inactiveColor;
+
     private float _offScreenX;
 
     private float _onScreenX;
@@ -83,6 +89,24 @@ public class Character : MonoBehaviour
     {
         Mood = mood;
         UpdateSprite();
+    }
+    public void IsTalking(CharacterMood mood)
+    {
+        var sprite = _moods.GetMoodSprite(Mood);
+        var image = GetComponent<Image>();
+
+        image.sprite = sprite;
+        image.color = activeColor;
+        image.preserveAspect = true;
+    }
+    public void IsNotTalking(CharacterMood mood)
+    {
+        var sprite = _moods.GetMoodSprite(Mood);
+        var image = GetComponent<Image>();
+
+        image.sprite = sprite;
+        image.color = inactiveColor;
+        image.preserveAspect = true;
     }
 
     private void UpdateSprite()

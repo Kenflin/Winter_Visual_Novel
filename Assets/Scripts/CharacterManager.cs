@@ -13,10 +13,19 @@ public class CharacterManager : MonoBehaviour
     private GameObject _characterPrefab;
 
     [SerializeField]
-    private CharacterMoods _aliceMoods;
+    private CharacterMoods _JohnMoods;
 
     [SerializeField]
-    private CharacterMoods _playerMoods;
+    private CharacterMoods _lumberjackMoods;
+
+    [SerializeField]
+    private CharacterMoods _farmerMoods;
+
+    [SerializeField]
+    private CharacterMoods _farmerBrotherMoods;
+
+    [SerializeField]
+    private CharacterMoods _phoneMoods;
 
     private void Start()
     {
@@ -132,14 +141,86 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    public void IsNotTalking(string name, string mood)
+    {
+
+        if (!Enum.TryParse(name, out CharacterName nameEnum))
+        {
+            Debug.LogWarning($"Failed to parse character name to character enum: {name}");
+            return;
+        }
+
+        if (!Enum.TryParse(mood, out CharacterMood moodEnum))
+        {
+            Debug.LogWarning($"Failed to parse character mood to enum: {mood}");
+            return;
+        }
+
+        IsNotTalking(nameEnum, moodEnum);
+    }
+
+    public void IsNotTalking(CharacterName name, CharacterMood mood)
+    {
+        var character = _characters.FirstOrDefault(x => x.Name == name);
+
+        if (character?.IsShowing != true)
+        {
+            Debug.LogWarning($"Character {name} is not currently shown.");
+            return;
+        }
+        else
+        {
+            character.IsNotTalking(mood);
+        }
+    }
+
+    public void IsTalking(string name, string mood)
+    {
+
+        if (!Enum.TryParse(name, out CharacterName nameEnum))
+        {
+            Debug.LogWarning($"Failed to parse character name to character enum: {name}");
+            return;
+        }
+
+        if (!Enum.TryParse(mood, out CharacterMood moodEnum))
+        {
+            Debug.LogWarning($"Failed to parse character mood to enum: {mood}");
+            return;
+        }
+
+        IsTalking(nameEnum, moodEnum);
+    }
+
+    public void IsTalking(CharacterName name, CharacterMood mood)
+    {
+        var character = _characters.FirstOrDefault(x => x.Name == name);
+
+        if (character?.IsShowing != true)
+        {
+            Debug.LogWarning($"Character {name} is not currently shown.");
+            return;
+        }
+        else
+        {
+            character.IsTalking(mood);
+        }
+    }
+
     private CharacterMoods GetMoodSetForCharacter(CharacterName name)
     {
         switch (name)
         {
-            case CharacterName.Alice:
-                return _aliceMoods;
-            case CharacterName.Me:
-                return _playerMoods;
+            case CharacterName.John:
+                return _JohnMoods;
+            case CharacterName.Lumberjack:
+                return _lumberjackMoods;
+            case CharacterName.Farmer:
+                return _farmerMoods;
+            case CharacterName.FarmerBrother:
+                return _farmerBrotherMoods;
+            case CharacterName.Phone:
+                return _phoneMoods;
             default:
                 Debug.LogError($"Could not find moodset for {name}");
                 return null;

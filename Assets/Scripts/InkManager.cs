@@ -8,15 +8,21 @@ using static CharacterEnums;
 using FontStyles = TMPro.FontStyles;
 using TextAsset = UnityEngine.TextAsset;
 using System;
+using System.Linq;
 
 public class InkManager : MonoBehaviour
 {
     [SerializeField]
-    private TextAsset _inkJsonAsset;
+    private TextAsset _inkJsonAssetES;
+    [SerializeField]
+    private TextAsset _inkJsonAssetEN;
     private Story _story;
 
     [SerializeField]
     private TMP_Text _textField;
+
+    [SerializeField]
+    private TMP_Text _textFieldName;
 
     [SerializeField]
     private VerticalLayoutGroup _choiceButtonContainer;
@@ -29,45 +35,49 @@ public class InkManager : MonoBehaviour
 
     [SerializeField]
     private Color _thoughtTextColor;
+    [SerializeField]
+    private string language;
 
+    private SoundController _soundController;
 
     private CharacterManager _characterManager;
 
-    private int _relationshipStrength;
-    public int RelationshipStrength
+    private bool _giftStolen;
+    public bool GiftStolen
     {
-        get => _relationshipStrength;
+        get => _giftStolen;
         private set
         {
-            Debug.Log($"Updating RelationshipStrength value. Old value: {_relationshipStrength}, new value: {value}");
-            _relationshipStrength = value;
+            Debug.Log($"Updating giftStolen value. Old value: {_giftStolen}, new value: {value}");
+            _giftStolen = value;
         }
     }
 
-    private int _mentalHealth;
-    public int MentalHealth
+    private bool _turkeyStolen;
+    public bool TurkeyStolen
     {
-        get => _mentalHealth;
+        get => _turkeyStolen;
         private set
         {
-            Debug.Log($"Updating MentalHealth value. Old value: {_mentalHealth}, new value: {value}");
-            _mentalHealth = value;
+            Debug.Log($"Updating turkeyStolen value. Old value: {_turkeyStolen}, new value: {value}");
+            _turkeyStolen = value;
         }
     }
 
     void Start()
     {
         _characterManager = FindObjectOfType<CharacterManager>();
+        _soundController = FindObjectOfType<SoundController>();
 
         StartStory();
 
         InitializeVariables();
 
-        var relationshipStrength = (int)_story.variablesState["relationship_strength"];
+        var giftStolen = (bool)_story.variablesState["giftStolen"];
 
-        var mentalHealth = (int)_story.variablesState["mental_health"];
+        var turkeyStolen = (bool)_story.variablesState["turkeyStolen"];
 
-        Debug.Log($"Logging ink variables. Relationship strength: {relationshipStrength}, mental health: {mentalHealth}");
+        Debug.Log($"Logging ink variables. Gift Stolen: {giftStolen}, Turkey Stolen: {turkeyStolen}");
         
     }
 
@@ -80,7 +90,8 @@ public class InkManager : MonoBehaviour
 
     void StartStory()
     {
-        _story = new Story(_inkJsonAsset.text);
+        if(language == "ES") _story = new Story(_inkJsonAssetES.text);
+        else _story = new Story(_inkJsonAssetEN.text);
 
         if (!string.IsNullOrEmpty(_loadedState))
         {
@@ -94,22 +105,26 @@ public class InkManager : MonoBehaviour
           => _characterManager.HideCharacter(name));
         _story.BindExternalFunction("ChangeMood", (string name, string mood)
           => _characterManager.ChangeMood(name, mood));
+        _story.BindExternalFunction("IsNotTalking", (string name, string mood)
+  => _characterManager.IsNotTalking(name,mood));
+        _story.BindExternalFunction("IsTalking", (string name, string mood)
+=> _characterManager.IsTalking(name, mood));
         DisplayNextLine();
     }
 
     private void InitializeVariables()
     {
-        RelationshipStrength = (int)_story.variablesState["relationship_strength"];
-        MentalHealth = (int)_story.variablesState["mental_health"];
+        GiftStolen = (bool)_story.variablesState["giftStolen"];
+        TurkeyStolen = (bool)_story.variablesState["turkeyStolen"];
 
-        _story.ObserveVariable("relationship_strength", (arg, value) =>
+        _story.ObserveVariable("giftStolen", (arg, value) =>
         {
-            RelationshipStrength = (int)value;
+            GiftStolen = (bool)value;
         });
 
-        _story.ObserveVariable("mental_health", (arg, value) =>
+        _story.ObserveVariable("turkeyStolen", (arg, value) =>
         {
-            MentalHealth = (int)value;
+            TurkeyStolen = (bool)value;
         });
 
     }
@@ -122,13 +137,20 @@ public class InkManager : MonoBehaviour
 
             text = text?.Trim(); // removes white space from text
 
-            ApplyStyling();
+            _textFieldName.text = text.Split(':')[0];//displays name
+            _textField.text = text.Split(':')[1] ?? text; // displays new text
 
-            _textField.text = text; // displays new text
+            ApplyStyling();
+            ApplySound();
+
         }
         else if (_story.currentChoices.Count > 0)
         {
             DisplayChoices();
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }
 
@@ -185,11 +207,23 @@ public class InkManager : MonoBehaviour
         {
            _textField.color = _thoughtTextColor;
            _textField.fontStyle = FontStyles.Italic;
+            _textField.text = "<" + _textField.text + ">";
+        }else if (_story.currentTags.Contains("FinalSentence"))
+        {
+            _textField.fontSize = 232f;
         }
         else
         {
             _textField.color = _normalTextColor;
             _textField.fontStyle = FontStyles.Normal;
+        }
+    }
+
+    private void ApplySound()
+    {
+        if (_story.currentTags.Contains("sound"))
+        {
+            _soundController.selectSound(_story.currentTags.Last());
         }
     }
 
