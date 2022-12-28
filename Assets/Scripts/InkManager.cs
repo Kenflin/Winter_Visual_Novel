@@ -38,9 +38,19 @@ public class InkManager : MonoBehaviour
     [SerializeField]
     private string language;
 
+    [SerializeField]
+    private int letterPerSeconds;
+
+    [SerializeField]
+    private Button _nextButton;
+
     private SoundController _soundController;
 
     private CharacterManager _characterManager;
+
+    private BackgroundManager _backgroundManager;
+
+    private bool isWriting = false;
 
     private bool _giftStolen;
     public bool GiftStolen
@@ -68,6 +78,7 @@ public class InkManager : MonoBehaviour
     {
         _characterManager = FindObjectOfType<CharacterManager>();
         _soundController = FindObjectOfType<SoundController>();
+        _backgroundManager = FindObjectOfType<BackgroundManager>();
 
         StartStory();
 
@@ -138,10 +149,20 @@ public class InkManager : MonoBehaviour
             text = text?.Trim(); // removes white space from text
 
             _textFieldName.text = text.Split(':')[0];//displays name
-            _textField.text = text.Split(':')[1] ?? text; // displays new text
+            StartCoroutine(TypeDialog(text.Split(':')[1] ?? text)); //display text letter by letter
+           // _textField.text = text.Split(':')[1] ?? text; // displays new text
 
             ApplyStyling();
             ApplySound();
+            if (_story.currentTags.Contains("background"))
+            {
+                if(_story.currentTags.Last()!="black")
+                _backgroundManager.changeBackground(_story.currentTags.Last());
+                else
+                {
+                    _backgroundManager.BackgroundToBlack();
+                }
+            }
 
         }
         else if (_story.currentChoices.Count > 0)
@@ -152,6 +173,7 @@ public class InkManager : MonoBehaviour
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
+
     }
 
     private void DisplayChoices()
@@ -207,7 +229,7 @@ public class InkManager : MonoBehaviour
         {
            _textField.color = _thoughtTextColor;
            _textField.fontStyle = FontStyles.Italic;
-            _textField.text = "<" + _textField.text + ">";
+
         }else if (_story.currentTags.Contains("FinalSentence"))
         {
             _textField.fontSize = 232f;
@@ -230,5 +252,22 @@ public class InkManager : MonoBehaviour
     public string GetStoryState()
     {
         return _story.state.ToJson();
+    }
+
+    public IEnumerator TypeDialog(string dialog)
+    {
+        if (_story.currentTags.Contains("thought")) dialog = "<" + dialog + ">";
+        isWriting = true;
+        _nextButton.gameObject.SetActive(!isWriting);
+        _textField.text = "";
+        foreach (var letter in dialog.ToCharArray()){
+
+            _textField.text += letter;
+            yield return new WaitForSeconds(1f/letterPerSeconds);
+        }
+
+
+        isWriting = false;
+        _nextButton.gameObject.SetActive(!isWriting);
     }
 }

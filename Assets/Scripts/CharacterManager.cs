@@ -27,6 +27,15 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     private CharacterMoods _phoneMoods;
 
+    [SerializeField]
+    private CharacterMoods _truckerMoods;
+
+    [SerializeField]
+    private CharacterMoods _wifeMoods;
+
+    [SerializeField]
+    private CharacterMoods _sonMoods;
+
     private void Start()
     {
         _characters = new List<Character>();
@@ -221,6 +230,12 @@ public class CharacterManager : MonoBehaviour
                 return _farmerBrotherMoods;
             case CharacterName.Phone:
                 return _phoneMoods;
+            case CharacterName.Trucker:
+                return _truckerMoods;
+            case CharacterName.Wife:
+                return _wifeMoods;
+            case CharacterName.Son:
+                return _sonMoods;
             default:
                 Debug.LogError($"Could not find moodset for {name}");
                 return null;

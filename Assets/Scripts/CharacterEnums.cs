@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterEnums : MonoBehaviour
 {
-    public enum CharacterName { John, Lumberjack , Farmer , FarmerBrother , Phone };
+    public enum CharacterName { John, Lumberjack , Farmer , FarmerBrother , Phone , Trucker, Wife , Son};
 
     public enum CharacterPosition { Center, Left, Right };
 
