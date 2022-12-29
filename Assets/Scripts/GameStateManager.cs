@@ -4,20 +4,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameStateManager : MonoBehaviour
 {
     private InkManager _inkManager;
     private CharacterManager _characterManager;
+    private LanguageSelector _languageSelector;
+    private BackgroundManager _backgroundManager;
 
     private void Start()
     {
         _inkManager = FindObjectOfType<InkManager>();
         _characterManager = FindObjectOfType<CharacterManager>();
+        _languageSelector = FindObjectOfType<LanguageSelector>();
+        _backgroundManager = FindObjectOfType<BackgroundManager>();
     }
 
     public void StartGame()
     {
+        if(_languageSelector!=null) _languageSelector.SelectLanguage();
         UnityEngine.SceneManagement.SceneManager.LoadScene("WinterNovelJam");
     }
 
@@ -42,7 +48,8 @@ public class GameStateManager : MonoBehaviour
         return new SaveData
         {
             InkStoryState = _inkManager.GetStoryState(),
-            Characters = _characterManager.GetVisibleCharacters()
+            Characters = _characterManager.GetVisibleCharacters(),
+            Background = _backgroundManager.ReturnBackground()
         };
     }
 
@@ -63,6 +70,7 @@ public class GameStateManager : MonoBehaviour
 
             InkManager.LoadState(save.InkStoryState);
             CharacterManager.LoadState(save.Characters);
+            BackgroundManager.LoadState(save.Background);
 
             StartGame();
         }

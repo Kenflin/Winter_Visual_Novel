@@ -13,10 +13,10 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField]
     private GameObject canvasBackground;
 
-   public void changeBackground(string scene)
+    public void changeBackground(string scene)
     {
-        int backgrounid = Int32.Parse(scene.Split("-")[0]);
-        canvasBackground.GetComponent<Image>().sprite = backgrounds[backgrounid];
+        int backgroundid = Int32.Parse(scene.Split("-")[0]);
+        canvasBackground.GetComponent<Image>().sprite = backgrounds[backgroundid];
         canvasBackground.GetComponent<Image>().color = Color.white;
     }
 
@@ -26,4 +26,22 @@ public class BackgroundManager : MonoBehaviour
 
     }
 
+    public int ReturnBackground()
+    {
+        return Int32.Parse(canvasBackground.GetComponent<Image>().sprite.name.Split("-")[0]);
+    }
+
+
+    private static int _loadedBackground;
+    public static void LoadState(int background)
+    {
+        _loadedBackground = background;
+
+    }
+
+    public void RestoreBackground()
+    {
+        canvasBackground.GetComponent<Image>().sprite = backgrounds[_loadedBackground];
+        canvasBackground.GetComponent<Image>().color = Color.white;
+    }
 }

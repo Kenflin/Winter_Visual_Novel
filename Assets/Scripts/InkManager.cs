@@ -35,8 +35,6 @@ public class InkManager : MonoBehaviour
 
     [SerializeField]
     private Color _thoughtTextColor;
-    [SerializeField]
-    private string language;
 
     [SerializeField]
     private int letterPerSeconds;
@@ -49,6 +47,9 @@ public class InkManager : MonoBehaviour
     private CharacterManager _characterManager;
 
     private BackgroundManager _backgroundManager;
+
+    [SerializeField]
+    private LanguageSelector _languageSelector;
 
     private bool isWriting = false;
 
@@ -79,6 +80,7 @@ public class InkManager : MonoBehaviour
         _characterManager = FindObjectOfType<CharacterManager>();
         _soundController = FindObjectOfType<SoundController>();
         _backgroundManager = FindObjectOfType<BackgroundManager>();
+        _languageSelector = FindObjectOfType<LanguageSelector>();
 
         StartStory();
 
@@ -101,12 +103,15 @@ public class InkManager : MonoBehaviour
 
     void StartStory()
     {
-        if(language == "ES") _story = new Story(_inkJsonAssetES.text);
+        int language = 0;
+        if (_languageSelector != null) language = _languageSelector.SelectedLanguage;
+        if (language == 1) _story = new Story(_inkJsonAssetES.text);
         else _story = new Story(_inkJsonAssetEN.text);
 
         if (!string.IsNullOrEmpty(_loadedState))
         {
             _story?.state?.LoadJson(_loadedState);
+            _backgroundManager.RestoreBackground();
 
             _loadedState = null;
         }
@@ -117,9 +122,9 @@ public class InkManager : MonoBehaviour
         _story.BindExternalFunction("ChangeMood", (string name, string mood)
           => _characterManager.ChangeMood(name, mood));
         _story.BindExternalFunction("IsNotTalking", (string name, string mood)
-  => _characterManager.IsNotTalking(name,mood));
+         => _characterManager.IsNotTalking(name,mood));
         _story.BindExternalFunction("IsTalking", (string name, string mood)
-=> _characterManager.IsTalking(name, mood));
+        => _characterManager.IsTalking(name, mood));
         DisplayNextLine();
     }
 

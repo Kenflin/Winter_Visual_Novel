@@ -8,4 +8,5 @@ public class SaveData
 {
     public string InkStoryState;
     public List<CharacterData> Characters;
+    public int Background;
 }
