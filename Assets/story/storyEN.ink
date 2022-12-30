@@ -171,7 +171,7 @@ Narrator: You decide to go over the farm to see if they are still selling turkey
 ==Exterior_Granja
 {ShowCharacter("Farmer", "Right", "Fine")}
 {ShowCharacter("John", "Left", "Fine")}
-Narrator: John enters the farm and sees am old man leaning on a fence looking down at a turkey and approaches him.{IsTalking("John","Fine")}{IsNotTalking("Farmer","Fine")}#background #7-TurkeyFarm
+Narrator: John enters the farm and sees an old man leaning on a fence looking down at a turkey and approaches him.{IsTalking("John","Fine")}{IsNotTalking("Farmer","Fine")}#background #7-TurkeyFarm
 John: Good sir, I know it's late, I hope I'm not disturbing you, I was just coming to ask if you still have any turkeys for sale.{IsTalking("John","Fine")}{IsNotTalking("Farmer","Fine")}
 Narrator: The Farmer turns to John very slowly.
 Farmer: I'm sorry son, we have no more turkeys left for sale.{IsTalking("Farmer","Fine")}{IsNotTalking("John","Fine")}
@@ -215,7 +215,15 @@ John: Is that ok for you?
 Trucker: Yes, no problem, we'll be there in a jiffy.{ShowCharacter("Trucker", "Left", "Fine")}{IsNotTalking("John","Fine")}#music #trucker
 Narrator: John enters the truck and enjoys the trucker's favorite radio station, Rock FM.{IsTalking("John","Fine")}{HideCharacter("John")}{HideCharacter("Trucker")}#background #black
 Narrator: Not only that, but he also dared to sing a duet of Estopa with the truck driver.
+
+* {turkeyStolen} ->camioneroBAD
+*{not turkeyStolen} ->Llegada_a_casa
+
+=camioneroBAD
+Narrator: While they are singing the trucker can't stop looking at Linda.
+Narrator: Then, John notice that the trucker start to be very nervous and he uses his phone while he is driving.
 ->Llegada_a_casa
+
 === Llegada_a_casa==
 Narrator: The driver drops you off at your door. John sees two parked cars that do not look familiar to him.#background #music #9-JohnHouse
 Narrator: When he enters his home, he sees two groups of people.{ShowCharacter("John", "Center", "Fine")}#background #10-JohnHouseInterior
@@ -262,10 +270,10 @@ John: It looks great, let's enjoy the dinner together.{IsTalking("John","Fine")}
 {HideCharacter("Lumberjack")}
 ->HablarFinal
 =LenadorConPavo
- Narrador: The Luberjack approaches his family and the three of them leave the house.{IsTalking("John","Fine")}
+ Narrador: The Luberjack approaches his family and the three of them leave the house.{IsTalking("John","Fine")}{HideCharacter("Lumberjack")}
 ->HablarFinal
 =HablarFinalGranjeroBAD
-Narrator: As you approach the farmerhe can see that you are carrying the beloved Linda under your arm. #music #decision
+Narrator: As you approach the farmer he can see that you are carrying the beloved Linda under your arm. #music #decision
 Farmer's Brother:AJA! Just as the truck driver told us.{IsTalking("FarmerBrother","Fine")}{IsNotTalking("John","Fine")}
 Farmer's Brother:What the hell were you planning to do with Linda?
 John: I just wanted to have something for dinner.{IsTalking("John","Fine")}{IsNotTalking("FarmerBrother","Fine")}
@@ -274,8 +282,8 @@ Narrator: The Farmer's brother takes Linda from John's arms and carries her away
 ->HablarFinal
 =HablarFinalGranjeroGOOD
 Farmer's Brother: Good night John, my brother told me that you needed a turkey, so here I am.{IsTalking("FarmerBrother","Fine")}{IsNotTalking("John","Fine")}#music #hut
-Farmer's Brother: I gave your wife the turkey and some potatoes we had left at the farm.
-Farmer's Brother: I hope you enjoy them. Merry Christmas!
+Farmer's Brother: I gave your wife the turkey and some potatoes we had left at the farm.{IsTalking("FarmerBrother","Fine")}
+Farmer's Brother: I hope you enjoy them. Merry Christmas!{IsTalking("FarmerBrother","Fine")}
 John: Thank you very much for everything. I will have to see your brother again to thank him personally.{IsTalking("John","Fine")}{IsNotTalking("FarmerBrother","Fine")}
 {HideCharacter("FarmerBrother")}
 Narrator: The Farmer leaves the house.
@@ -290,7 +298,7 @@ Narrator: The Farmer leaves the house.
 --> END
 ===Final_GOOD_GOOD===
 Narrador: John sits at the table with his family and new friends.{ShowCharacter("John","Center","Fine")}{ShowCharacter("Wife","Right","Fine")}{ShowCharacter("Lumberjack","Left","Fine")}#background #music #11-End
-Narrador: John realizes that after his adventure and coming back empty-handed, he had gained a new friendship.
+Narrador: John realizes that after his adventure and coming back empty-handed, he had gained a new friendship.{IsTalking("Farmer","Fine")}
 Narrador: And that the most important thing about Christmas is not the gift you give or the gift you receive or the feast you have for dinner.
 Narrador: But to be able to share it with people you love.
 

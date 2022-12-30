@@ -211,12 +211,20 @@ Narrator: John sale de la granja continuando la carretera dirección a casa.
 ===Vuelta_a_Casa===
 Narrator: John se fija en el reloj y se da cuenta de que ya se hace tarde y debería buscar una manera más rápida de volver a casa así que decide hacer Autostop. #background #music #black
 Narrator: Casualmente, un camión pasa por allí y decide parar a recogerte.
-John: Buenas Señor ,me dirigía hacia el pueblo que está aquí al lado {ShowCharacter("John", "Left", "Fine")} #background #8-Truck
+John: Buenas Señor ,me dirigía hacia el pueblo que está aquí al lado {ShowCharacter("John", "Right", "Fine")} #background #8-Truck
 John: ¿Le viene bien?
-Camionero: Si, sin problema , montese que llegamos en un santiamen.{ShowCharacter("Trucker", "Right", "Fine")}{IsNotTalking("John","Fine")} #music #trucker
-Narrator: John se monta en el camión y disfruta de la emisora de radio favorita del camionero, Rock FM.{IsTalking("John","Fine")}#background #black
-Narrator: No solo eso sino que además se atrevió a cantar a dúo una de Estopa con el camionero.{HideCharacter("John")}{HideCharacter("Trucker")}
+Camionero: Si, sin problema , montese que llegamos en un santiamen.{ShowCharacter("Trucker", "Left", "Fine")}{IsNotTalking("John","Fine")} #music #trucker
+Narrator: John se monta en el camión y disfruta de la emisora de radio favorita del camionero, Rock FM.{IsTalking("John","Fine")}{HideCharacter("John")}{HideCharacter("Trucker")}#background #black
+Narrator: No solo eso sino que además se atrevió a cantar a dúo una de Estopa con el camionero.
+
+* {turkeyStolen} ->camioneroBAD
+*{not turkeyStolen} ->Llegada_a_casa
+
+=camioneroBAD
+Narrator: Mientras están cantando el camionero no le quita ojo a Linda.
+Narrator: Es cuando John se da cuenta de que el camionero empieza a estar muy nervioso y utiliza su telefono mientras conduce.
 ->Llegada_a_casa
+
 === Llegada_a_casa==
 Narrator: El conductor te deja en la puerta de tu casa.John ve que hay dos coches aparcados que no le suenan de nada.#background #music #9-JohnHouse
 Narrator: Cuando entra a casa, ve a dos grupos de personas.{ShowCharacter("John", "Center", "Fine")}#background #10-JohnHouseInterior
@@ -263,7 +271,7 @@ John: Me parece genial, disfrutemos la cena todos juntos.{IsTalking("John","Fine
 {HideCharacter("Lumberjack")}
 ->HablarFinal
 =LenadorConPavo
- Narrador: El leñador se acerca a su familia y los tres abandonan la casa.{IsTalking("John","Fine")}
+ Narrador: El leñador se acerca a su familia y los tres abandonan la casa.{IsTalking("John","Fine")}{HideCharacter("Lumberjack")}
 ->HablarFinal
 =HablarFinalGranjeroBAD
 Narrator: Te acercas al granjero y ve como bajo el brazo tienes a la amada Linda, la mascota familiar. #music #decision
@@ -271,12 +279,12 @@ Hermano Granjero:AJA!Tal y como nos dijo el camionero.{IsTalking("FarmerBrother"
 Hermano Granjero:¿Qué demonios pensabas hacer con Linda?.
 John: Yo solo quería tener algo para cenar.{IsTalking("John","Fine")}{IsNotTalking("FarmerBrother","Fine")}
 Hermano Granjero: Pero como te atreves a coger así como así un pavo que no es tuyo.{IsTalking("FarmerBrother","Fine")}{IsNotTalking("John","Fine")}
-Narrator: El hermano del Granjero le quita a Linda de los brazos de John y se la lleva, no sin antes coger el otro pavo que te había prometido y llevárselo también.{IsTalking("John","Fine")}
+Narrator: El hermano del Granjero le quita a Linda de los brazos de John y se la lleva, no sin antes coger el otro pavo que te había prometido y llevárselo también.{HideCharacter("FarmerBrother")}{IsTalking("John","Fine")}
 ->HablarFinal
 =HablarFinalGranjeroGOOD
 Hermano Granjero: Buenas John, mi hermano me contó lo que te pasaba así que aquí estoy.{IsTalking("FarmerBrother","Fine")}{IsNotTalking("John","Fine")} #music #hut
-Hermano Granjero: Le he dado a tu esposa el pavo y unas patatas que teníamos de sobra en la granja.
-Hermano Granjero: Espero que las disfrutéis . ¡Feliz Navidad!
+Hermano Granjero: Le he dado a tu esposa el pavo y unas patatas que teníamos de sobra en la granja.{IsTalking("FarmerBrother","Fine")}
+Hermano Granjero: Espero que las disfrutéis . ¡Feliz Navidad!{IsTalking("FarmerBrother","Fine")}
 John: Muchas gracias por todo. Tendré que volver a ver a tu hermano para agradecérselo personalmente.{IsTalking("John","Fine")}{IsNotTalking("FarmerBrother","Fine")}
 {HideCharacter("FarmerBrother")}
 Narrator: El Granjero sale de la casa.
@@ -291,7 +299,7 @@ Narrator: El Granjero sale de la casa.
 --> END
 ===Final_GOOD_GOOD===
 Narrador: John se sienta en la mesa junto a su familia y a sus nuevos amigos.{ShowCharacter("John","Center","Fine")}{ShowCharacter("Wife","Right","Fine")}{ShowCharacter("Lumberjack","Left","Fine")}#background #music #11-End
-Narrador: John se da cuenta que después de su aventura y de haber vuelto con las manos vacías, había ganado una nueva amistad.
+Narrador: John se da cuenta que después de su aventura y de haber vuelto con las manos vacías, había ganado una nueva amistad.{IsTalking("Lumberjack","Fine")}
 Narrador: Y ahí se dió cuenta que lo más importante de la Navidad no es el regalo que entregas o el que recibes o el banquete que te das en la cena.
 Narrador: Sino el poder compartirla con gente a la que quieres.
 -> Despedida

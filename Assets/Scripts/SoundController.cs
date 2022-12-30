@@ -54,7 +54,7 @@ public class SoundController : MonoBehaviour
             _audioSourceMusic.clip = _audioClipsMusic[3];
             _audioSourceMusic.Play();
         }
-        else if(music == "hut" || music == "9-JohnHouse" || music == "7 - TurkeyFarm")
+        else if(music == "hut" || music == "9-JohnHouse" || music == "7-TurkeyFarm")
         {
             _audioSourceMusic.clip = _audioClipsMusic[4];
             _audioSourceMusic.Play();
