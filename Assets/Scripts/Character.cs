@@ -127,4 +127,9 @@ public class Character : MonoBehaviour
             Mood = Mood
         };
     }
+
+    private void Start()
+    {
+        gameObject.GetComponent<Transform>().position = new Vector3(gameObject.GetComponent<Transform>().position.x,Screen.height * 0.55f, gameObject.GetComponent<Transform>().position.z);
+    }
 }

@@ -159,16 +159,7 @@ public class InkManager : MonoBehaviour
 
             ApplyStyling();
             ApplySound();
-            if (_story.currentTags.Contains("background"))
-            {
-                if(_story.currentTags.Last()!="black")
-                _backgroundManager.changeBackground(_story.currentTags.Last());
-                else
-                {
-                    _backgroundManager.BackgroundToBlack();
-                }
-            }
-
+            ApplyBackground();
         }
         else if (_story.currentChoices.Count > 0)
         {
@@ -181,6 +172,18 @@ public class InkManager : MonoBehaviour
 
     }
 
+    private void ApplyBackground()
+    {
+        if (_story.currentTags.Contains("background"))
+        {
+            if (_story.currentTags.Last() != "black")
+                _backgroundManager.changeBackground(_story.currentTags.Last());
+            else
+            {
+                _backgroundManager.BackgroundToBlack();
+            }
+        }
+    }
     private void DisplayChoices()
     {
         // checks if choices are already being displaye
@@ -237,7 +240,7 @@ public class InkManager : MonoBehaviour
 
         }else if (_story.currentTags.Contains("FinalSentence"))
         {
-            _textField.fontSize = 232f;
+            _textField.fontSize = 200;
         }
         else
         {
@@ -251,6 +254,10 @@ public class InkManager : MonoBehaviour
         if (_story.currentTags.Contains("sound"))
         {
             _soundController.selectSound(_story.currentTags.Last());
+        }
+        if (_story.currentTags.Contains("music"))
+        {
+            _soundController.selectMusic(_story.currentTags.Last());
         }
     }
 
